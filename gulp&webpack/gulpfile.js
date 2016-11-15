@@ -37,14 +37,13 @@ gulp.task('sassTask', function () {
     .pipe(plumber({errorHandler: errorHandler}))
     .pipe(sourcemaps.init())
     .pipe(sass())
-    .pipe(sourcemaps.write({includeContent: false}))
     .pipe(autoprefixer({
       browsers: ['last 2 versions', '> 5%', 'Firefox > 20', 'ios 6', 'android >= 4.0', 'IE 8'],
       remove: false
     }))
     .pipe(postcss(processors))
     .pipe(cleanCSS())
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('dist/css'))
     .pipe(browserSync.reload({stream: true}))
 })
