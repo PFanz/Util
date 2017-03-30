@@ -1,7 +1,5 @@
-var releaseUrl = '"dist/'
-
 var gulp = require('gulp')
-var htmlmin = require('gulp-htmlmin')
+// var htmlmin = require('gulp-htmlmin')
 var replace = require('gulp-replace')
 var gutil = require('gulp-util')
 var plumber = require('gulp-plumber') // 防止错误打断
@@ -14,6 +12,12 @@ var webpack = require('webpack-stream')
 var imagemin = require('gulp-imagemin')
 var browserSync = require('browser-sync').create()
 var filter = require('gulp-filter')
+
+var config = require('./config.js')
+var releaseUrl = '"./'
+if (config.url !== undefined || config.url === '') {
+  releaseUrl = '"' + config.url
+}
 
 // 出错回调函数
 var errorHandler = (e) => {
@@ -31,7 +35,7 @@ gulp.task('jsTask', function () {
 
 // postcss 配置
 var processors = [
-  // require('cssgrace')
+  require('cssgrace')
 ]
 
 // css
@@ -84,11 +88,11 @@ gulp.task('imgTask', function () {
 // html
 gulp.task('htmlTask', function () {
   gulp.src('./*.html')
-    .pipe(htmlmin({
-      collapseWhitespace: true,
-      removeComments: true
-    }))
-    .pipe(replace(/"dist\//g, releaseUrl))
+    // .pipe(htmlmin({
+    //   collapseWhitespace: true,
+    //   removeComments: true
+    // }))
+    .pipe(replace(/".\/dist\//g, releaseUrl))
     .pipe(gulp.dest('dist/'))
 })
 
