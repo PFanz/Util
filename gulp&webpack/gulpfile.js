@@ -13,6 +13,7 @@ var imagemin = require('gulp-imagemin')
 var browserSync = require('browser-sync').create()
 var filter = require('gulp-filter')
 
+// 配置地址
 var config = require('./config.js')
 var releaseUrl = '"./'
 if (config.url !== undefined || config.url === '') {
@@ -87,24 +88,34 @@ gulp.task('imgTask', function () {
 
 // html
 gulp.task('htmlTask', function () {
-  gulp.src('./*.html')
+  gulp.src('src/*.html')
     // .pipe(htmlmin({
     //   collapseWhitespace: true,
     //   removeComments: true
     // }))
-    .pipe(replace(/".\/dist\//g, releaseUrl))
+    .pipe(replace(/"\.\//g, releaseUrl))
     .pipe(gulp.dest('dist/'))
+})
+
+gulp.task('configTask', function () {
+  config = require('./config.js')
+  if (config.url !== undefined || config.url === '') {
+    releaseUrl = '"' + config.url
+  } else {
+    releaseUrl = '"./'
+  }
 })
 
 // browser-sync服务
 gulp.task('serve', ['imgTask', 'libsTask', 'sassTask', 'jsTask', 'htmlTask'], function () {
   browserSync.init({
-    server: './'
+    server: 'dist'
   })
   gulp.watch('src/sass/*.scss', ['sassTask'])
   gulp.watch('src/js/*.js', ['jsTask']).on('change', browserSync.reload)
   gulp.watch('src/images/*', ['imgTask']).on('change', browserSync.reload)
-  gulp.watch('*.html', ['htmlTask']).on('change', browserSync.reload)
+  gulp.watch('src/*.html', ['htmlTask']).on('change', browserSync.reload)
+  gulp.watch('./config.js', ['configTask', 'htmlTask']).on('change', browserSync.reload)
 })
 
 gulp.task('default', ['serve'])
