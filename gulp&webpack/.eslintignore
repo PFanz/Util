@@ -1,3 +1,4 @@
 *.html
 src/libs
+dist
 node_modules

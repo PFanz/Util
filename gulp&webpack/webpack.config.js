@@ -17,6 +17,7 @@ module.exports = {
     ]
   },
   plugins: [
+    // 是否压缩JS代码
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
