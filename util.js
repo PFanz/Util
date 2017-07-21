@@ -105,6 +105,17 @@ const Util = {
       }
     }
     return ''
+  },
+  // 浏览器判断
+  // from wangyi
+  getBrower: () => {
+    var t = navigator.userAgent.toLowerCase(),
+    e = /(webkit)[ \/]([\w.]+)/,
+          n = /(opera)(?:.*version)?[ \/]([\w.]+)/,
+          i = /(msie) ([\w.]+)/,
+          o = /(mozilla)(?:.*? rv:([\w.]+))?/,
+    r = e.exec(t) || n.exec(t) || i.exec(t) || t.indexOf('compatible') < 0 && o.exec(t) || [];
+    return { browser: r[1] || '', version: r[2] || '0', msie: r[1] == 'msie' }
   }
 }
 
